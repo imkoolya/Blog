@@ -5,10 +5,10 @@ namespace Blog.DAL.Models
 {
     public class User
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public ICollection<Role> Roles { get; set; }
+        public required int Id { get; set; }
+        public required string Username { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+        public required ICollection<Role> Roles { get; set; }
     }
 }
