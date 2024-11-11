@@ -28,9 +28,9 @@ namespace Blog.DAL
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Username = "admin", Email = "admin@example.com" },
-                new User { Id = 2, Username = "moderator", Email = "moderator@example.com" },
-                new User { Id = 3, Username = "user", Email = "user@example.com" }
+                new User { Id = 1, Username = "admin", Email = "admin@example.com", Password = "ADMIN123" },
+                new User { Id = 2, Username = "moderator", Email = "moderator@example.com", Password = "MODER123" },
+                new User { Id = 3, Username = "user", Email = "user@example.com", Password = "USER123" }
             );
 
             modelBuilder.Entity<UserRole>().HasData(
@@ -38,11 +38,6 @@ namespace Blog.DAL
                 new UserRole { UserId = 2, RoleId = 2 },
                 new UserRole { UserId = 3, RoleId = 3 }
             );
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=database.db");
         }
     }
 }

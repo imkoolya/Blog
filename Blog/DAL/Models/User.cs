@@ -9,6 +9,6 @@ namespace Blog.DAL.Models
         public required string Username { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
-        public required ICollection<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }
