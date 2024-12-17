@@ -1,0 +1,44 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Редактирование пользователей";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <form asp-action="AdminEdit" method="post">
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="form-group">
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Роли пользователя</label>
+            @foreach (var role in Model.AllRoles)
+            {
+                <div class="form-check">
+                    @if (role == "Пользователь")
+                    {
+                        <input class="form-check-input" type="checkbox" name="Roles" value="@role" checked disabled />
+                        <label class="form-check-label">@role (обязательная роль)</label>
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="checkbox" name="Roles" value="@role" @(Model.Roles.Contains(role) ? "checked" : "") />
+                        <label class="form-check-label">@role</label>
+                    }
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>

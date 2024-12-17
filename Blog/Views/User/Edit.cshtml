@@ -1,0 +1,34 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Редактирование пользователя";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
+                @error.ErrorMessage
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary mt-2">Сохранить изменения</button>
+    </form>
+</div>

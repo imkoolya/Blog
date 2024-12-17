@@ -1,0 +1,29 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Email</th>
+                <th>Роли</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@string.Join(", ", user.Roles)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

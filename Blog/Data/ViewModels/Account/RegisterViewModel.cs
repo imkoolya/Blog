@@ -1,24 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Data.ViewModels
+namespace Blog.Data.ViewModels.Account
 {
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Это поле обязательно.")]
         [StringLength(30, ErrorMessage = "Имя должно быть не менее 3 и не более 30 символов.", MinimumLength = 3)]
-        public string UserName { get; set; }
+        [Display(Name = "Имя")]
+        public string UserName { get; set; } = null!;
 
         [Required(ErrorMessage = "Это поле обязательно.")]
         [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Это поле обязательно.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [Display(Name = "Пароль")]
+        public string Password { get; set; } = null!;
 
         [Required(ErrorMessage = "Это поле обязательно.")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "Подтвердить пароль")]
+        public string ConfirmPassword { get; set; } = null!;
     }
 }

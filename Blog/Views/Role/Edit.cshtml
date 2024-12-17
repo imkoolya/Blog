@@ -1,0 +1,19 @@
+﻿@model RoleViewModel
+
+@{
+    ViewData["Title"] = "Редактирование роли";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label>Название роли</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success mt-2">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary mt-2">Отмена</a>
+    </form>
+</div>

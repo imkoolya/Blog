@@ -15,12 +15,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Article\" />
-    <Folder Include="Views\Comment\" />
-    <Folder Include="Views\Role\" />
-    <Folder Include="Views\Tag\" />
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
 </Project>

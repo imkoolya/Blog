@@ -1,4 +1,4 @@
-using Blog.Data.Models;
+﻿using Blog.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,6 @@ namespace Blog
                 .AddDefaultTokenProviders();
 
             var app = builder.Build();
-
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -39,7 +38,6 @@ namespace Blog
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
 
             app.Run();
         }

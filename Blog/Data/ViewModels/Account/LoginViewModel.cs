@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Data.ViewModels
+namespace Blog.Data.ViewModels.Account
 {
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Это поле обязательно.")]
         [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Это поле обязательно.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [Display(Name = "Пароль")]
+        public string Password { get; set; } = null!;
 
         [Display(Name = "Запомнить меня?")]
         public bool RememberMe { get; set; }

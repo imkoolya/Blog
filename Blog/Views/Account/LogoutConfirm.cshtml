@@ -1,7 +1,8 @@
-﻿<div class="container">
-    <h2>@ViewData["Title"]</h2>
+﻿@{
+    ViewData["Title"] = "Выход из аккаунта";
+}
 
-    <p>Вы успешно вышли из аккаунта.</p>
-
+<div class="container">
+    <h5>Вы успешно вышли из аккаунта.</h5>
     <p>Спасибо за посещение! Будем рады видеть вас <a href="@Url.Action("Login", "Account")">снова</a>.</p>
 </div>

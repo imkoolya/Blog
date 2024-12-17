@@ -1,0 +1,17 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <p><strong>Имя:</strong> @Model.UserName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p>
+        <strong>Роли:</strong>
+        <span>@string.Join(", ", Model.Roles)</span>
+    </p>
+    <a href="@Url.Action("Edit", "User")" class="btn btn-primary">Редактировать</a>
+</div>

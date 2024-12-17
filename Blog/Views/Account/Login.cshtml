@@ -4,34 +4,56 @@
     ViewData["Title"] = "Войти";
 }
 
-<div class="container">
-    <h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Title"]</h3>
 
+<div class="container">
     <form asp-action="Login" method="post">
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label asp-for="Email" class="control-label"></label>
             <input asp-for="Email" class="form-control" placeholder="Введите вашу электронную почту" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" type="password" class="form-control" placeholder="Введите ваш пароль" />
+            <div class="input-group">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Введите ваш пароль" />
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    Показать
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
-        <div class="form-group form-check">
+        <div class="form-group form-check mt-2">
             <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
             <label class="form-check-label" asp-for="RememberMe">Запомнить меня</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Войти</button>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
+                @error.ErrorMessage
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary mt-3">Войти</button>
     </form>
 
-    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-    {
-        <div class="alert alert-danger">@error.ErrorMessage</div>
-    }
-
-    <p class="mt-3">Ещё нет аккаунта? <a href="@Url.Action("Register", "Account")">Зарегистрироваться</a></p>
+    <p class="mt-3">Ещё нет аккаунта? <a href="@Url.Action("Register", "Account")">Зарегистрироваться</a>.</p>
 </div>
+
+<script>
+    const passwordField = document.getElementById('Password');
+    const togglePasswordButton = document.getElementById('togglePassword');
+
+    togglePasswordButton.addEventListener('click', function () {
+        const type = passwordField.type === 'password' ? 'text' : 'password';
+        passwordField.type = type;
+
+        const icon = togglePasswordButton.querySelector('i');
+        icon.classList.toggle('bi-eye');
+        icon.classList.toggle('bi-eye-slash');
+    });
+</script>

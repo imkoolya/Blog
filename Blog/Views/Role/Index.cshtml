@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewData["Title"] = "Список ролей";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Роли:</h4>
+            <ul class="list-group">
+                @foreach (var role in Model)
+                {
+                    <li class="list-group-item">
+                        @role.Name
+                        @if (role.Name != "Пользователь" && role.Name != "Модератор" && role.Name != "Администратор")
+                        {
+                            <form asp-action="Delete" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@role.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger float-end">Удалить</button>
+                            </form>
+                            <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-warning float-end mx-2">Редактировать</a>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Добавить новую роль</h4>
+            <form asp-action="Create" method="post" class="d-flex">
+                <div class="input-group w-100">
+                    <input type="text" name="roleName" class="form-control" placeholder="Введите название роли" />
+                    <button type="submit" class="btn btn-primary" style="height: 100%;">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

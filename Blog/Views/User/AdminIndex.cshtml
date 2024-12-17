@@ -1,0 +1,86 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Управление пользователями";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Email</th>
+                <th>Роли</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@string.Join(", ", user.Roles)</td>
+                    <td>
+                        <a asp-action="AdminEdit" asp-route-userId="@user.UserId"
+                           class="btn btn-sm btn-warning"
+                           data-bs-toggle="tooltip">
+                            Редактировать
+                        </a>
+                        <button type="button" class="btn btn-sm btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-user-id="@user.UserId"
+                                data-user-name="@user.UserName">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+            </div>
+            <div class="modal-body">
+                Вы действительно хотите удалить пользователя <strong id="deleteUserName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="AdminDelete">
+                    <input type="hidden" name="userId" id="deleteUserId" />
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-user-id');
+            var userName = button.getAttribute('data-user-name');
+
+            var modalUserName = deleteModal.querySelector('#deleteUserName');
+            var modalUserId = deleteModal.querySelector('#deleteUserId');
+
+            modalUserName.textContent = userName;
+            modalUserId.value = userId;
+        });
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+}
