@@ -78,20 +78,19 @@ namespace Blog.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            return View("Logout");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> LogoutConfirmed()
         {
             await _signInManager.SignOutAsync();
             TempData["Success"] = "Вы успешно вышли из аккаунта.";
-
-            return RedirectToAction("LogoutConfirm");
-        }
-
-        [HttpGet]
-        public IActionResult LogoutConfirm()
-        {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

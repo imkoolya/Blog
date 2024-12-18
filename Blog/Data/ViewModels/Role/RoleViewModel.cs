@@ -8,7 +8,7 @@ namespace Blog.Data.ViewModels.Role
 
         [Required(ErrorMessage = "Это поле обязательно.")]
         [StringLength(15, ErrorMessage = "Имя должно быть не менее 2 и не более 15 символов.", MinimumLength = 2)]
-        [Display(Name = "Имя")]
+        [Display(Name = "Название")]
         public string Name { get; set; } = null!;
     }
 

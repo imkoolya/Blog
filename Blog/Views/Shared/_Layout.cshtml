@@ -28,22 +28,25 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="User" asp-action="Profile">Профиль</a>
                             </li>
-                            @if (User.IsInRole("Администратор"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Role" asp-action="Index">Упр. Ролями</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="User" asp-action="AdminIndex">Упр. Пользователями</a>
-                                </li>
-                            }
                         }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            @if (User.IsInRole("Модератор"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="ModerPanel">Модер панель</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Администратор"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AdminPanel">Админ панель</a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                <form asp-controller="Account" asp-action="Logout" method="get">
                                     <button type="submit" class="btn btn-link nav-link">Log Out</button>
                                 </form>
                             </li>

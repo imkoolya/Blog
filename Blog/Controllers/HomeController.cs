@@ -1,5 +1,6 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Blog.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Controllers
@@ -19,6 +20,18 @@ namespace Blog.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Администратор")]
+        public IActionResult AdminPanel()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Модератор")]
+        public IActionResult ModerPanel()
         {
             return View();
         }

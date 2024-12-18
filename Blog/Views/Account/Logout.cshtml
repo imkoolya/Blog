@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Подтверждение выхода";
+}
+
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    <div class="card text-center" style="width: 24rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+        <div class="card-header">
+            Подтверждение выхода
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Вы уверены, что хотите выйти?</h5>
+            <form method="post" asp-action="LogoutConfirmed" asp-controller="Account">
+                <button type="submit" class="btn btn-danger mt-2">Выйти</button>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-2">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>

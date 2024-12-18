@@ -1,6 +1,6 @@
 ﻿namespace Blog.Data.ViewModels.User
 {
-    public class ProfileViewModel
+    public class ProfileUserViewModel
     {
         public string UserName { get; set; } = null!;
         public string Email { get; set; } = null!;

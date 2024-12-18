@@ -49,7 +49,7 @@ namespace Blog
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            var model = new ProfileViewModel
+            var model = new ProfileUserViewModel
             {
                 UserName = user.UserName,
                 Email = user.Email,

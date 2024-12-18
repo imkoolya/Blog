@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-
-        public List<Article> Articles { get; set; } = new List<Article> { };
+        public ICollection<Article> Articles { get; set; } = new List<Article>();
     }
+
 }
