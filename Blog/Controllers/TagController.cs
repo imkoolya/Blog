@@ -2,10 +2,10 @@
 using Blog.Data.ViewModels.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Controllers
 {
-    [Authorize(Roles = "Модератор,Администратор")]
     public class TagController : Controller
     {
         private readonly AppDbContext _context;
@@ -15,7 +15,22 @@ namespace Blog.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
+        {
+            var tags = await _context.Tags
+                .Select(tag => new TagViewModel
+                {
+                    Id = tag.Id,
+                    Name = tag.Name,
+                    ArticleCount = tag.Articles.Count
+                })
+                .ToListAsync();
+
+            return View(tags);
+        }
+
+
+        public IActionResult AdminIndex()
         {
             var tags = _context.Tags.Select(tag => new TagViewModel
             {
@@ -41,7 +56,7 @@ namespace Blog.Controllers
                 _context.SaveChanges();
                 TempData["Success"] = "Тег успешно создан.";
 
-                return RedirectToAction("Index", "Tag");
+                return RedirectToAction("AdminIndex", "Tag");
             }
 
             return RedirectToAction("Index", "Tag");

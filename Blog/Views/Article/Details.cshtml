@@ -1,0 +1,76 @@
+﻿@model ArticleViewModel
+
+@{
+    ViewData["Title"] = $"Статья: {Model.Title}";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <h7 class="mt-1 d-flex">Автор: @Model.Author</h7>
+    <h7 class="mt-1 d-flex">Дата создания: @Model.CreatedAt.ToString("dd MMM yyyy")</h7>
+    <div class="content-box">
+        <h6>Содержание:</h6>
+        <p>@Html.Raw(Model.Content)</p>
+    </div>
+
+    <div class="tags">
+        <h6 class="mt-2">Теги:</h6>
+        @foreach (var tag in Model.Tags)
+        {
+            <span class="badge bg-primary">@tag.Name</span>
+        }
+    </div>
+
+    <div class="comment">
+        <h6>Комментарии</h6>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+
+            <form method="post" asp-action="Add" asp-controller="Comment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="articleId" value="@Model.Id" />
+                <div class="form-group">
+                    <textarea name="content" class="form-control" placeholder="Введите ваш комментарий" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Отправить</button>
+            </form>
+            <hr />
+        }
+        else
+        {
+            <p class="text-muted">Войдите, чтобы оставить комментарий.</p>
+        }
+
+        <div>
+            @if (Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">@comment.Content</p>
+                            <p class="text-muted small">
+                                <strong>@comment.Author</strong> - @comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                            </p>
+                            @if (User.Identity.IsAuthenticated && (User.IsInRole("Модератор") || User.IsInRole("Администратор") || User.Identity.Name == comment.Author))
+                            {
+                                <form method="post" asp-action="Delete" asp-controller="Comment" class="d-inline">
+                                    <input type="hidden" name="id" value="@comment.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                            }
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Нет комментариев. Будьте первым, кто оставит комментарий!</p>
+            }
+        </div>
+
+    </div>
+</div>

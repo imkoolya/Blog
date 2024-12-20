@@ -10,7 +10,8 @@
         public User Author { get; set; } = null!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
-        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Tag> Tags { get; set; } = new List<Tag>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
+
 }

@@ -11,5 +11,4 @@ namespace Blog.Data.ViewModels.Role
         [Display(Name = "Название")]
         public string Name { get; set; } = null!;
     }
-
 }

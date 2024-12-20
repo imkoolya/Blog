@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241218180152_Create")]
-    partial class Create
+    [Migration("20241220134636_stage2")]
+    partial class stage2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,19 +20,19 @@ namespace Blog.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("ArticleTag", b =>
+            modelBuilder.Entity("ArticleTags", b =>
                 {
-                    b.Property<int>("ArticlesId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TagsId")
+                    b.Property<int>("TagId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ArticlesId", "TagsId");
+                    b.HasKey("ArticleId", "TagId");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("TagId");
 
-                    b.ToTable("ArticleTag");
+                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("Blog.Data.Models.Article", b =>
@@ -319,17 +319,17 @@ namespace Blog.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("ArticleTag", b =>
+            modelBuilder.Entity("ArticleTags", b =>
                 {
                     b.HasOne("Blog.Data.Models.Article", null)
                         .WithMany()
-                        .HasForeignKey("ArticlesId")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Blog.Data.Models.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

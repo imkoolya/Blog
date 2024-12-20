@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TagViewModel>
+
+@{
+    ViewData["Title"] = "Список тегов";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Теги:</h4>
+            <ul class="list-group">
+                @foreach (var tag in Model)
+                {
+                    <li class="list-group-item">
+                        @tag.Name
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@tag.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger float-end">Удалить</button>
+                        </form>
+                        <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-sm btn-warning float-end mx-2">Редактировать</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Добавить новый тег</h4>
+            <form asp-action="Create" method="post" class="d-flex">
+                <div class="input-group w-100">
+                    <input type="text" name="Name" class="form-control" placeholder="Введите название тега" />
+                    <button type="submit" class="btn btn-primary" style="height: 100%;">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

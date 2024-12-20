@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Blog.Migrations
 {
     /// <inheritdoc />
-    public partial class Create : Migration
+    public partial class stage2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -194,24 +194,24 @@ namespace Blog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleTag",
+                name: "ArticleTags",
                 columns: table => new
                 {
-                    ArticlesId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TagsId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TagId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleTag", x => new { x.ArticlesId, x.TagsId });
+                    table.PrimaryKey("PK_ArticleTags", x => new { x.ArticleId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_ArticleTag_Articles_ArticlesId",
-                        column: x => x.ArticlesId,
+                        name: "FK_ArticleTags_Articles_ArticleId",
+                        column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ArticleTag_Tags_TagsId",
-                        column: x => x.TagsId,
+                        name: "FK_ArticleTags_Tags_TagId",
+                        column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -251,9 +251,9 @@ namespace Blog.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleTag_TagsId",
-                table: "ArticleTag",
-                column: "TagsId");
+                name: "IX_ArticleTags_TagId",
+                table: "ArticleTags",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -307,7 +307,7 @@ namespace Blog.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArticleTag");
+                name: "ArticleTags");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

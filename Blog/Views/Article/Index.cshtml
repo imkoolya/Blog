@@ -1,0 +1,30 @@
+﻿@model List<ArticleViewModel>
+@{
+    ViewData["Title"] = "Список статей";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <div class="row">
+        @foreach (var article in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@article.Title</h5>
+                        <p class="card-text">@article.Summary</p>
+                        <div class="mt-2">
+                            @foreach (var tag in article.Tags)
+                            {
+                                <span class="badge bg-primary">@tag.Name</span>
+                            }
+                        </div>
+                        <p class="text-muted">Автор: @article.Author | @article.CreatedAt.ToString("dd MMM yyyy")</p>
+                        <a class="btn btn-primary" href="@Url.Action("Details", "Article", new { id = article.Id })">Читать далее</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

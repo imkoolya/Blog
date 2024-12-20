@@ -12,9 +12,18 @@ namespace Blog
         public required DbSet<Tag> Tags { get; set; }
         public required DbSet<Comment> Comments { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
+
+            builder.Entity<Article>()
+            .HasMany(a => a.Tags)
+            .WithMany(t => t.Articles)
+            .UsingEntity<Dictionary<string, object>>(
+                "ArticleTags",
+                j => j.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
+                j => j.HasOne<Article>().WithMany().HasForeignKey("ArticleId")
+            );
         }
     }
 }

@@ -29,3 +29,25 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.content-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.tags {
+    margin-top: 20px;
+}
+
+    .tags .badge {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+.comment {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}

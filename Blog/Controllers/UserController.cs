@@ -1,4 +1,5 @@
 ﻿using Blog.Data.Models;
+using Blog.Data.ViewModels.Article;
 using Blog.Data.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,13 @@ namespace Blog
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
 
-        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -49,11 +52,20 @@ namespace Blog
 
             var roles = await _userManager.GetRolesAsync(user);
 
+            var articles = await _context.Articles.Where(a => a.AuthorId == user.Id).Select(a => new ArticleViewModel
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Summary = a.Summary,
+                CreatedAt = a.CreatedAt
+            }).ToListAsync();
+
             var model = new ProfileUserViewModel
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Roles = roles.ToList()
+                Roles = roles.ToList(),
+                Articles = articles
             };
 
             return View(model);

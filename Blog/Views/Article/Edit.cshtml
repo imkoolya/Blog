@@ -1,0 +1,56 @@
+﻿@model ArticleCreateEditViewModel
+
+@{
+    ViewData["Title"] = "Редактирование статьи";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group mt-2">
+        <label asp-for="Title" class="control-label">Заголовок</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label asp-for="Summary" class="control-label">Краткое описание</label>
+        <textarea asp-for="Summary" class="form-control"></textarea>
+        <span asp-validation-for="Summary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label asp-for="Content" class="control-label">Содержание</label>
+        <textarea asp-for="Content" class="form-control" id="editor"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <div>
+            @foreach (var tag in Model.AllTags)
+            {
+                <label style="display:inline-block; margin-right: 10px;">
+                    <input type="checkbox" name="SelectedTags" value="@tag.Id"
+                    @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "") />
+                    @tag.Name
+                </label>
+            }
+        </div>
+        <span asp-validation-for="SelectedTags" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}

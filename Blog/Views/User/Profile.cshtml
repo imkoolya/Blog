@@ -7,11 +7,88 @@
 <h3>@ViewData["Title"]</h3>
 
 <div class="container">
-    <p><strong>Имя:</strong> @Model.UserName</p>
-    <p><strong>Email:</strong> @Model.Email</p>
-    <p>
-        <strong>Роли:</strong>
-        <span>@string.Join(", ", Model.Roles)</span>
-    </p>
-    <a href="@Url.Action("Edit", "User")" class="btn btn-primary">Редактировать</a>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Личная информация</h5>
+            <p><strong>Имя:</strong> @Model.UserName</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p>
+                <strong>Роли:</strong>
+                <span>@string.Join(", ", Model.Roles)</span>
+            </p>
+            <a href="@Url.Action("Edit", "User")" class="btn btn-primary">Редактировать</a>
+            <a href="@Url.Action("Create", "Article")" class="btn btn-primary">Создать статью</a>
+        </div>
+        <div class="col-md-6">
+            <h5>Статьи</h5>
+            @if (Model.Articles.Any())
+            {
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    @foreach (var article in Model.Articles)
+                    {
+                        <div class="card" style="flex: 1 1 calc(50% - 10px);">
+                            <div class="card-body">
+                                <h5 class="card-title">@article.Title</h5>
+                                <p class="card-text">@article.Summary</p>
+                                <p class="card-text">
+                                    <small class="text-muted">Дата создания: @article.CreatedAt.ToString("g")</small>
+                                </p>
+                                <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-success mt-2">Смотреть</a>
+                                <a href="@Url.Action("Edit", "Article", new { id = article.Id })" class="btn btn-warning mt-2">Редактировать</a>
+                                <button type="button" class="btn btn-danger mt-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                        data-id="@article.Id"
+                                        data-title="@article.Title">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Статей не найдено.</p>
+            }
+        </div>
+    </div>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+            </div>
+            <div class="modal-body">
+                Вы действительно хотите удалить статью <strong id="deleteArticleName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="Delete" asp-controller="Article">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="deleteId" />
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var articleId = button.getAttribute('data-id');
+            var articleTitle = button.getAttribute('data-title');
+
+            var modalArticleName = deleteModal.querySelector('#deleteArticleName');
+            var modalId = deleteModal.querySelector('#deleteId');
+
+            modalArticleName.textContent = articleTitle;
+            modalId.value = articleId;
+        });
+    </script>
+}
