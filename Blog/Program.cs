@@ -1,6 +1,8 @@
 ﻿using Blog.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Extensions.Logging;
 
 namespace Blog
 {
@@ -9,6 +11,12 @@ namespace Blog
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            LogManager.LoadConfiguration("nlog.config");
+
+            builder.Logging.ClearProviders();
+            builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            builder.Logging.AddNLog();
 
             builder.Services.AddControllersWithViews();
 
@@ -20,9 +28,9 @@ namespace Blog
                 .AddDefaultTokenProviders();
 
             var app = builder.Build();
+
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -34,7 +42,20 @@ namespace Blog
 
             app.MapStaticAssets();
 
-            app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            app.UseExceptionHandler("/Error");
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == 404)
+                {
+                    response.Redirect("/NotFound");
+                }
+                else if (response.StatusCode == 403)
+                {
+                    response.Redirect("/AccessDenied");
+                }
+            });
 
             app.MapControllerRoute(
                 name: "default",

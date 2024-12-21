@@ -5,6 +5,7 @@ using Blog.Data.ViewModels.Tag;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Blog.Controllers
 {
@@ -12,6 +13,7 @@ namespace Blog.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public ArticleController(AppDbContext context, UserManager<User> userManager)
         {
@@ -22,16 +24,17 @@ namespace Blog.Controllers
         public IActionResult Index()
         {
             var articles = _context.Articles.Include(a => a.Author).Include(a => a.Tags).OrderByDescending(a => a.CreatedAt).Select(a => new ArticleViewModel
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Summary = a.Summary,
+                CreatedAt = a.CreatedAt,
+                Author = a.Author.UserName,
+                Tags = a.Tags.Select(t => new TagViewModel
                 {
-                    Id = a.Id,
-                    Title = a.Title,
-                    Summary = a.Summary,
-                    CreatedAt = a.CreatedAt,
-                    Author = a.Author.UserName,
-                    Tags = a.Tags.Select(t => new TagViewModel
-                    {
-                        Name = t.Name
-                    }).ToList()}).ToList();
+                    Name = t.Name
+                }).ToList()
+            }).ToList();
 
             return View(articles);
         }
@@ -116,6 +119,7 @@ namespace Blog.Controllers
 
                 _context.Articles.Add(article);
                 TempData["Success"] = "Статья успешно создана.";
+                Logger.Info("Пользователь создал статью.");
                 _context.SaveChanges();
 
                 return RedirectToAction("Index", "Article");
@@ -182,6 +186,7 @@ namespace Blog.Controllers
 
                 _context.SaveChanges();
                 TempData["Success"] = "Статья успешно изменена.";
+                Logger.Info("Пользователь изменил статью.");
 
                 return RedirectToAction("Index", "Article");
             }
@@ -215,6 +220,7 @@ namespace Blog.Controllers
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
             TempData["Success"] = "Статья успешно удалена.";
+            Logger.Info("Пользователь удалил статью.");
 
             return RedirectToAction("Profile", "User");
         }

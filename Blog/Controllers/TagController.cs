@@ -2,12 +2,14 @@
 using Blog.Data.ViewModels.Tag;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Blog.Controllers
 {
     public class TagController : Controller
     {
         private readonly AppDbContext _context;
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public TagController(AppDbContext context)
         {
@@ -54,6 +56,7 @@ namespace Blog.Controllers
                 _context.Tags.Add(tag);
                 _context.SaveChanges();
                 TempData["Success"] = "Тег успешно создан.";
+                Logger.Info($"Тег {tag.Name} создан.");
 
                 return RedirectToAction("AdminIndex", "Tag");
             }
@@ -86,6 +89,7 @@ namespace Blog.Controllers
                 tag.Name = model.Name;
                 _context.SaveChanges();
                 TempData["Success"] = "Тег успешно обновлен.";
+                Logger.Info($"Тег {tag.Name} изменён.");
 
                 return RedirectToAction("Index", "Tag");
             }
@@ -102,6 +106,7 @@ namespace Blog.Controllers
             _context.Tags.Remove(tag);
             _context.SaveChanges();
             TempData["Success"] = "Тег успешно удален.";
+            Logger.Info($"Тег {tag.Name} удален.");
 
             return RedirectToAction("Index", "Tag");
         }

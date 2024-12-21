@@ -2,36 +2,35 @@
 
 namespace Blog.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using NLog;
+
     public class ErrorController : Controller
     {
-        [HttpGet]
-        public IActionResult AccessDenied()
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+
+        [Route("Error")]
+        public IActionResult Error()
         {
-            return View();
+            Logger.Error("Произошла ошибка.");
+
+            return View("Error");
         }
 
-        [HttpGet]
+        [Route("NotFound")]
         public IActionResult NotFound()
         {
-            return View();
+            Logger.Error("Произошла ошибка");
+
+            return View("NotFound");
         }
 
-        [HttpGet]
-        public IActionResult GenericError()
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied()
         {
-            return View();
-        }
+            Logger.Error("Произошла ошибка");
 
-        [Route("Error/{statusCode}")]
-        public IActionResult HandleError(int statusCode)
-        {
-            return statusCode switch
-            {
-                404 => RedirectToAction("NotFound"),
-                403 => RedirectToAction("AccessDenied"),
-                _ => RedirectToAction("GenericError"),
-            };
+            return View("AccessDenied");
         }
-
     }
 }

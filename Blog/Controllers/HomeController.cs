@@ -1,21 +1,16 @@
-﻿using System.Diagnostics;
-using Blog.Data.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public IActionResult Index()
         {
+            Logger.Info("Пользователь зашёл на главную.");
             return View();
         }
 
@@ -27,19 +22,15 @@ namespace Blog.Controllers
         [Authorize(Roles = "Администратор")]
         public IActionResult AdminPanel()
         {
+            Logger.Info("Администратор зашёл в Админ Панель.");
             return View();
         }
 
         [Authorize(Roles = "Модератор")]
         public IActionResult ModerPanel()
         {
+            Logger.Info("Модератор зашёл в Модер Панель.");
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

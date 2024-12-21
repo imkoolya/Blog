@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Blog
 {
@@ -13,6 +14,7 @@ namespace Blog
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
@@ -103,6 +105,7 @@ namespace Blog
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Вы успешно изменили данные.";
+                    Logger.Info($"Пользователь {user.UserName} изменил данные.");
 
                     return RedirectToAction("Profile", "User");
                 }
@@ -203,6 +206,8 @@ namespace Blog
             if (result.Succeeded)
             {
                 TempData["Success"] = "Вы успешно изменили данные пользователя.";
+                Logger.Info($"Администратор изменил данные {user.UserName}.");
+
                 return RedirectToAction("AdminIndex", "User");
             }
 
@@ -221,6 +226,7 @@ namespace Blog
             if (roles.Contains("Администратор"))
             {
                 TempData["Error"] = "Невозможно удалить пользователя с ролью администратора.";
+                Logger.Info($"Попытка удаления Администратора! {user.UserName}.");
 
                 return RedirectToAction("AdminIndex", "User");
             }
@@ -230,6 +236,7 @@ namespace Blog
             if (result.Succeeded)
             {
                 TempData["Success"] = "Пользователь успешно удалён.";
+                Logger.Info($"Администратор удалил {user.UserName}.");
 
                 return RedirectToAction("AdminIndex", "User");
             }

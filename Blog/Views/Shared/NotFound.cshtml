@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Ресурс не найден";
+}
+
+<div class="container text-center">
+    <h3>@ViewData["Title"]</h3>
+
+    <p>К сожалению, запрашиваемый ресурс не существует. Возможно, вы ввели неправильный адрес или ресурс был удален.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Вернуться на главную</a>
+</div>

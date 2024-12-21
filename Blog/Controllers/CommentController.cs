@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using System.Security.Claims;
 
 namespace Blog.Controllers
@@ -11,6 +12,7 @@ namespace Blog.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public CommentController(AppDbContext context, UserManager<User> userManager)
         {
@@ -40,6 +42,7 @@ namespace Blog.Controllers
 
             _context.Comments.Add(comment);
             TempData["Success"] = "Комментарий добавлен.";
+            Logger.Info("Пользователь добавил комментарий.");
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", "Article", new { id = articleId });
@@ -67,9 +70,9 @@ namespace Blog.Controllers
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             TempData["Success"] = "Комментарий удалён.";
+            Logger.Info("Пользователь удалил комментарий.");
 
             return RedirectToAction("Details", "Article", new { id = comment.ArticleId });
         }
-
     }
 }

@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Доступ запрещен";
+}
+
+<div class="container text-center">
+    <h3>@ViewData["Title"]</h3>
+
+    <p>У вас нет прав для выполнения этого действия. Если вы считаете, что это ошибка, обратитесь к администратору.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Вернуться на главную</a>
+</div>

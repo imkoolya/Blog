@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Blog.Controllers
 {
@@ -9,6 +10,7 @@ namespace Blog.Controllers
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
         public RoleController(RoleManager<IdentityRole> roleManager)
         {
@@ -18,6 +20,7 @@ namespace Blog.Controllers
         public IActionResult Index()
         {
             var roles = _roleManager.Roles.ToList();
+            Logger.Info("Администратор зашёл на страницу списка ролей.");
 
             return View(roles);
         }
@@ -30,16 +33,16 @@ namespace Blog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string roleName)
+        public async Task<IActionResult> Create(string role)
         {
-            if (string.IsNullOrWhiteSpace(roleName))
+            if (string.IsNullOrWhiteSpace(role))
             {
                 TempData["Error"] = "Название роли не может быть пустым.";
 
                 return RedirectToAction("Index", "Role");
             }
 
-            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            var roleExists = await _roleManager.RoleExistsAsync(role);
 
             if (roleExists)
             {
@@ -48,22 +51,15 @@ namespace Blog.Controllers
                 return RedirectToAction("Index", "Role");
             }
 
-            await _roleManager.CreateAsync(new IdentityRole(roleName));
+            await _roleManager.CreateAsync(new IdentityRole(role));
             TempData["Success"] = "Роль успешно создана.";
-
+            Logger.Info($"Администратор создал роль {role}.");
             return RedirectToAction("Index", "Role");
         }
 
         public async Task<IActionResult> Edit(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-
-            if (role == null)
-            {
-                TempData["Error"] = "Эта роль не может быть изменена.";
-
-                return RedirectToAction("Index", "Role");
-            }
 
             var model = new RoleViewModel { Id = role.Id, Name = role.Name };
 
@@ -86,6 +82,7 @@ namespace Blog.Controllers
             role.Name = model.Name;
             await _roleManager.UpdateAsync(role);
             TempData["Success"] = "Роль успешно изменена.";
+            Logger.Info($"Администратор изменил роль {role.Name}.");
 
             return RedirectToAction("Index", "Role");
         }
@@ -105,6 +102,7 @@ namespace Blog.Controllers
 
             await _roleManager.DeleteAsync(role);
             TempData["Success"] = "Роль успешно удалена.";
+            Logger.Info($"Администратор удалил роль {role}.");
 
             return RedirectToAction("Index", "Role");
         }
