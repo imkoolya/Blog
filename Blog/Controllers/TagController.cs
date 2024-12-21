@@ -1,6 +1,5 @@
 ﻿using Blog.Data.Models;
 using Blog.Data.ViewModels.Tag;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
