@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLog;
 
-namespace Blog.Controllers
+namespace API.Controllers
 {
     [ApiController]
-    [Route("api/blog/[controller]")]  // Уникальный префикс маршрута
+    [Route("api/api/[controller]")]
     public class ErrorController : ControllerBase
     {
         private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -29,5 +29,5 @@ namespace Blog.Controllers
             Logger.Error("Ошибка доступа - Доступ запрещен");
             return Forbid();
         }
-    }
+    }  
 }
